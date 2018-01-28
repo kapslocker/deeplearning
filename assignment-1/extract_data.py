@@ -28,13 +28,12 @@ def read_data(choice, labelstring):
         fmt, num = struct.unpack(">II", labelfile.read(8))
         lbl = np.fromfile(labelfile, dtype=np.int8)
     count = len(lbl)
-    print labels
     with open(img_loc, 'rb') as images:
         fmt, num, rows, cols = struct.unpack(">IIII", images.read(16))
         img = np.fromfile(images, dtype = np.uint8).reshape(count, rows * cols, 1)
     for i in xrange(count):
         if lbl[i] in labels:
-            yield (vector(labels.index(lbl[i]), len(labels)), img[i])
+            yield (img[i], vector(labels.index(lbl[i]), len(labels)))
 
 def display(npimage):
     ''' Display a numpy 2D array'''
@@ -59,8 +58,8 @@ def train_data(labelstring):
 def test_data(labelstring):
     return list(read_data(1, labelstring))
 
-labelstring = "abcdefghi"
-m = test_data(labelstring)
-label, img = m[0]
-print label
-display(img)
+# labelstring = "abcdefghi"
+# m = test_data(labelstring)
+# label, img = m[0]
+# print label
+# display(img)
