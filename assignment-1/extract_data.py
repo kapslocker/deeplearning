@@ -1,12 +1,22 @@
 import os, struct
 import numpy as np
+from itertools import imap
 
+def get_mapping():
+    ''' (ASCII, label) '''
+    with open("byclass/emnist-byclass-mapping.txt") as mapping:
+        rows = imap(str.split, mapping)
+        data = [(int(row[1]), int(row[0])) for row in rows]
+    return dict(data)
 
-def read_data(choice = 0):
+def read_data(choice, labelstring):
     ''' return label, 2D image array
         choice: 0 -> train
                 1 -> test
+        labelstring: letters to take. e.g. "abcdefghi" (NOTE: Do not duplicate letters)
     '''
+    mp = get_mapping()
+    labels = [mp[ord(ch)] for ch in labelstring]
     if choice==0:
         img_loc = "byclass/train_images"
         label_loc = "byclass/train_labels"
@@ -14,16 +24,17 @@ def read_data(choice = 0):
         img_loc = "byclass/test_images"
         label_loc = "byclass/test_labels"
     # unpack ubyte fileloc given as C struct
-    with open(label_loc, 'rb') as labels:
-        fmt, num = struct.unpack(">II", labels.read(8))
-        lbl = np.fromfile(labels, dtype=np.int8)
-
+    with open(label_loc, 'rb') as labelfile:
+        fmt, num = struct.unpack(">II", labelfile.read(8))
+        lbl = np.fromfile(labelfile, dtype=np.int8)
     count = len(lbl)
+    print labels
     with open(img_loc, 'rb') as images:
         fmt, num, rows, cols = struct.unpack(">IIII", images.read(16))
         img = np.fromfile(images, dtype = np.uint8).reshape(count, rows * cols, 1)
     for i in xrange(count):
-        yield (lbl[i], img[i])
+        if lbl[i] in labels:
+            yield (vector(labels.index(lbl[i]), len(labels)), img[i])
 
 def display(npimage):
     ''' Display a numpy 2D array'''
@@ -37,15 +48,19 @@ def display(npimage):
     ax.yaxis.set_ticks_position('left')
     pyplot.show()
 
+def vector(index, num_classes):
+    a = np.zeros((num_classes, 1))
+    a[index] = 1.0
+    return a
 
-def extract_data(choice = 0):
-    data = list(read_data(choice))
-    return filter(lambda (x, y) : x >= 10 and x <= 61, data)
+def train_data(labelstring):
+     return list(read_data(0, labelstring))
 
-# data = extract_data(1)
-# label, pixels = data[120]
-# if(label > 35):
-#     asci = label - 36 + 97
-# else:
-#     asci = label - 10 + 65
-# print chr(asci)
+def test_data(labelstring):
+    return list(read_data(1, labelstring))
+
+labelstring = "abcdefghi"
+m = test_data(labelstring)
+label, img = m[0]
+print label
+display(img)
