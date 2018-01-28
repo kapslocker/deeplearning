@@ -21,7 +21,7 @@ def read_data(choice = 0):
     count = len(lbl)
     with open(img_loc, 'rb') as images:
         fmt, num, rows, cols = struct.unpack(">IIII", images.read(16))
-        img = np.fromfile(images, dtype = np.uint8).reshape(count, rows, cols)
+        img = np.fromfile(images, dtype = np.uint8).reshape(count, rows * cols, 1)
     for i in xrange(count):
         yield (lbl[i], img[i])
 
@@ -38,6 +38,14 @@ def display(npimage):
     pyplot.show()
 
 
-training_data = list(read_data(0))
+def extract_data(choice = 0):
+    data = list(read_data(choice))
+    return filter(lambda (x, y) : x >= 10 and x <= 61, data)
 
-label, pixels = training_data[3]
+# data = extract_data(1)
+# label, pixels = data[120]
+# if(label > 35):
+#     asci = label - 36 + 97
+# else:
+#     asci = label - 10 + 65
+# print chr(asci)
