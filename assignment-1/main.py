@@ -1,17 +1,20 @@
 from extract_data import *
 from neuralnet import *
-
-labelstring = "abcdefghi"
-learning_rate = 0.5
-mini_batch_size = 32
-model = [784,400,9]
-epochs = 2
+from nielsennet import *
+labelstring = "rocdtkghm"
+learning_rate = 3
+mini_batch_size = 36
+model = [784,30,10]
+epochs = 10
 
 NN = NeuralNetwork(learning_rate, model, mini_batch_size, epochs)
+# NN = Network(model)
 trainData = train_data(labelstring)
 testData = test_data(labelstring)
 
+
 print "Training started..."
+# NN.SGD(trainData, epochs, mini_batch_size, learning_rate, testData)
 NN.learn(trainData, testData)
 print "Testing started..."
-print NN.test(testData)
+NN.evaluate(testData)
