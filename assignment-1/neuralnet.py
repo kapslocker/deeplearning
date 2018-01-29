@@ -3,7 +3,7 @@ import random
 from functions import *
 from operator import add
 class NeuralNetwork(object):
-    def __init__(self, learningRate, model, minibatchsize, epochs, activation_function = 'sigmoid', activation_function_grad = 'sigmoid_grad'):
+    def __init__(self, learningRate, model, minibatchsize, epochs, dropout = 1.0,activation_function = 'sigmoid', activation_function_grad = 'sigmoid_grad'):
         ''' Setup a fully connected neural network represented by
             model: sizes of each layer (1D array)'''
 
@@ -13,6 +13,7 @@ class NeuralNetwork(object):
         self.epochs = epochs
         self.rate = learningRate
         self.mini_batch_size = minibatchsize
+        self.dropout = dropout
         if activation_function == 'sigmoid':
             self.activation_function = lambda x : sigmoid(x)
             self.activation_function_grad = lambda x : sigmoid_grad(x)
@@ -37,16 +38,21 @@ class NeuralNetwork(object):
         self.activations = [np.zeros((x, 1)) for x in model]
     def predict(self, x):
         ''' Run a forward propagation to evaluate '''
-        self.forwardProp(x)
+        self.forwardProp(x, False)
         return np.argmax(self.activations[-1])
 
-    def forwardProp(self, x):
+    def forwardProp(self, x, drop = True):
         self.activations[0] = x
         for i in xrange(1, self.num_layers):
+            ''' dropout vector for training phase'''
+            if(drop):
+                r = np.random.binomial(1, self.dropout, self.activations[i - 1].shape)
+                self.activations[i - 1] = r * self.activations[i - 1]
             self.z[i] = np.dot(self.weights[i], self.activations[i - 1]) + self.biases[i]
             self.activations[i] = self.activation_function(self.z[i])
 
     def learn(self, training_data, test_data):
+        # Test data is used only for printing progress per epoch, and not for training
         self.N = len(training_data)
         ''' Minibatch gradient descent '''
         for i in xrange(self.epochs):

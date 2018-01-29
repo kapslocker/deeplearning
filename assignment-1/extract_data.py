@@ -34,7 +34,7 @@ def read_data(choice, labelstring):
         img = np.fromfile(images, dtype = np.uint8).reshape(count, rows * cols, 1)
     for i in xrange(count):
         if lbl[i] in labels:
-            yield (img[i], vector(labels.index(lbl[i]), len(labels)))
+            yield (img[i] / 255.0, vector(labels.index(lbl[i]), len(labels)))
         # yield(img[i], vector(lbl[i], 10))
 
 def display(npimage):
