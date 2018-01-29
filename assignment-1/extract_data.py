@@ -4,8 +4,8 @@ from itertools import imap
 
 def get_mapping():
     ''' (ASCII, label) '''
-    # with open("byclass/emnist-byclass-mapping.txt") as mapping:
-    with open("byclass/emnist-digits-mapping.txt") as mapping:
+    with open("byclass/emnist-byclass-mapping.txt") as mapping:
+    # with open("byclass/emnist-digits-mapping.txt") as mapping:
         rows = imap(str.split, mapping)
         data = [(int(row[1]), int(row[0])) for row in rows]
     return dict(data)
@@ -17,7 +17,7 @@ def read_data(choice, labelstring):
         labelstring: letters to take. e.g. "abcdefghi" (NOTE: Do not duplicate letters)
     '''
     mp = get_mapping()
-    # labels = [mp[ord(ch)] for ch in labelstring]
+    labels = [mp[ord(ch)] for ch in labelstring]
     if choice==0:
         img_loc = "byclass/train_images"
         label_loc = "byclass/train_labels"
@@ -33,9 +33,9 @@ def read_data(choice, labelstring):
         fmt, num, rows, cols = struct.unpack(">IIII", images.read(16))
         img = np.fromfile(images, dtype = np.uint8).reshape(count, rows * cols, 1)
     for i in xrange(count):
-        # if lbl[i] in labels:
-            # yield (img[i], vector(labels.index(lbl[i]), len(labels)))
-        yield(img[i], vector(lbl[i], 10))
+        if lbl[i] in labels:
+            yield (img[i], vector(labels.index(lbl[i]), len(labels)))
+        # yield(img[i], vector(lbl[i], 10))
 
 def display(npimage):
     ''' Display a numpy 2D array'''
@@ -59,9 +59,3 @@ def train_data(labelstring):
 
 def test_data(labelstring):
     return list(read_data(1, labelstring))
-
-# labelstring = "abcdefghi"
-# m = test_data(labelstring)
-# label, img = m[0]
-# print label
-# display(img)

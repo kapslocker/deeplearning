@@ -86,4 +86,4 @@ class NeuralNetwork(object):
     def test(self, test_data):
         n = len(test_data)
         count = len(filter(lambda (x,y) : np.argmax(y) == self.predict(x), test_data))
-        print count, '/', n
+        print float(count) / n
