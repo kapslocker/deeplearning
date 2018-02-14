@@ -3,7 +3,7 @@ import random
 from functions import *
 from operator import add
 class NeuralNetwork(object):
-    def __init__(self, learningRate, model, minibatchsize, epochs, dropout = 1.0,activation_function = 'sigmoid', activation_function_grad = 'sigmoid_grad'):
+    def __init__(self, learningRate, model, minibatchsize, epochs, dropout = 1.0,activation_function = 'sigmoid', activation_function_grad = 'sigmoid_grad', objective_function = 'mean_squared', drop = True):
         ''' Setup a fully connected neural network represented by
             model: sizes of each layer (1D array)'''
 
@@ -14,6 +14,8 @@ class NeuralNetwork(object):
         self.rate = learningRate
         self.mini_batch_size = minibatchsize
         self.dropout = dropout
+        self.drop = drop
+        self.objective_function = objective_function
         if activation_function == 'sigmoid':
             self.activation_function = lambda x : sigmoid(x)
             self.activation_function_grad = lambda x : sigmoid_grad(x)
@@ -38,14 +40,14 @@ class NeuralNetwork(object):
         self.activations = [np.zeros((x, 1)) for x in model]
     def predict(self, x):
         ''' Run a forward propagation to evaluate '''
-        self.forwardProp(x, False)
+        self.forwardProp(x, True)
         return np.argmax(self.activations[-1])
 
-    def forwardProp(self, x, drop = True):
+    def forwardProp(self, x, isTest = False):
         self.activations[0] = x
         for i in xrange(1, self.num_layers):
             ''' dropout vector for training phase'''
-            if(drop):
+            if(self.drop and not isTest):
                 r = np.random.binomial(1, self.dropout, self.activations[i - 1].shape)
                 self.activations[i - 1] = r * self.activations[i - 1]
             self.z[i] = np.dot(self.weights[i], self.activations[i - 1]) + self.biases[i]
@@ -61,15 +63,17 @@ class NeuralNetwork(object):
                batches = [training_data[j : j + self.mini_batch_size] for j in xrange(0, self.N, self.mini_batch_size)]
                for batch in batches:
                    self.updatebatch(batch)
-               print "Processed Epoch {0} ".format(i),
-               self.test(test_data)
+               print "Processed Epoch {0} ".format(i), "Test accuracy: ", self.test(test_data), "Train accuracy: ", self.test(training_data)
 
     def backprop(self, x, y):
         error_biases =  [np.zeros(bias.shape) for bias in self.biases]
         error_weights = [np.zeros(wt.shape) for wt in self.weights]
         ''' One forward pass followed by one backward pass '''
         self.forwardProp(x)
-        outputLayerError = (self.activations[-1] - y) * self.activation_function_grad(self.z[-1])
+        if(self.objective_function == 'mean_squared'):
+            outputLayerError = (self.activations[-1] - y) * self.activation_function_grad(self.z[-1])
+        elif self.objective_function == 'cross_entropy':
+            outputLayerError = (self.activations[-1] - y)
         error_biases[-1] = outputLayerError
         error_weights[-1] = outputLayerError.dot(self.activations[-2].transpose())
         for i in xrange(self.num_layers - 2, 0, -1):
@@ -89,7 +93,8 @@ class NeuralNetwork(object):
         ''' Update weights and bias '''
         self.biases = [bias - (self.rate * error_bias) / self.mini_batch_size for bias, error_bias in zip(self.biases, error_biases)]
         self.weights = [weight - (self.rate * error_weight) / self.mini_batch_size for weight, error_weight in zip(self.weights, error_weights)]
+
     def test(self, test_data):
         n = len(test_data)
         count = len(filter(lambda (x,y) : np.argmax(y) == self.predict(x), test_data))
-        print float(count) / n
+        return float(count) / n

@@ -8,8 +8,10 @@ mini_batch_size = 36
 model = [784,30,9]
 model[-1] = len(labelstring)
 epochs = 100
+dropout_rate = 0.9
+isDropout = True
 
-NN = NeuralNetwork(learning_rate, model, mini_batch_size, epochs, dropout = 0.5)
+NN = NeuralNetwork(learning_rate, model, mini_batch_size, epochs, dropout = dropout_rate, objective_function = 'cross_entropy', drop = isDropout)
 # NN = Network(model)
 trainData = train_data(labelstring)
 testData = test_data(labelstring)
@@ -24,6 +26,7 @@ print "Testing data size: {0}".format(len(testData))
 NN.test(testData)
 
 '''
+objective_function takes two values: 'mean_squared' and 'cross_entropy'
 For 2 classes: 15373 images, [784 * 30 * 2] parameters
 learning_rate = 0.1
 dropout = 0.5
