@@ -3,7 +3,7 @@ import random
 from functions import *
 from operator import add
 class NeuralNetwork(object):
-    def __init__(self, learningRate, model, minibatchsize, epochs, l1_lambda = 0.0,  l2_lambda = 0.0, dropout = 1.0,activation_function = 'sigmoid', activation_function_grad = 'sigmoid_grad', objective_function = 'mean_squared', drop = True):
+    def __init__(self, learningRate, model, minibatchsize, epochs, l1_lambda = 0.0,  l2_lambda = 0.0, dropout = 1.0,activation_function = 'sigmoid', activation_function_grad = 'sigmoid_grad', objective_function = 'mean_squared', drop = True, isSoftmax = False):
         ''' Setup a fully connected neural network represented by
             model: sizes of each layer (1D array)'''
 
@@ -17,6 +17,7 @@ class NeuralNetwork(object):
         self.drop = drop
         self.l2lambda = l2_lambda
         self.l1lambda = l1_lambda
+        self.isSoftmaxEnabled = isSoftmax
         self.objective_function = objective_function
         if activation_function == 'sigmoid':
             self.activation_function = lambda x : sigmoid(x)
@@ -55,6 +56,8 @@ class NeuralNetwork(object):
                 activations_copy = r * self.activations[i - 1]
             self.z[i] = np.dot(self.weights[i], activations_copy) + self.biases[i]
             self.activations[i] = self.activation_function(self.z[i])
+        if(self.isSoftmaxEnabled):
+            self.activations[-1] = softmax(self.z[-1])
 
     def learn(self, training_data, test_data):
         # Test data is used only for printing progress per epoch, and not for training
@@ -71,12 +74,21 @@ class NeuralNetwork(object):
     def backprop(self, x, y):
         error_biases =  [np.zeros(bias.shape) for bias in self.biases]
         error_weights = [np.zeros(wt.shape) for wt in self.weights]
-        ''' One forward pass followed by one backward pass '''
-        self.forwardProp(x)
         if(self.objective_function == 'mean_squared'):
-            outputLayerError = (self.activations[-1] - y) * self.activation_function_grad(self.z[-1])
+            if(self.isSoftmaxEnabled):
+                sof = softmax(self.activations[-1])
+                sof_reshaped = sof.reshape((len(sof),))
+                t1 = self.activations[-1] - y
+                outputLayerError = np.dot(t1.reshape((len(t1),)), np.diag(sof_reshaped) - sof_reshaped * np.transpose(np.array([sof_reshaped])))
+                outputLayerError = outputLayerError.reshape((len(outputLayerError), 1))
+            else:
+                outputLayerError = (self.activations[-1] - y) * self.activation_function_grad(self.z[-1])
         elif self.objective_function == 'cross_entropy':
-            outputLayerError = (self.activations[-1] - y)
+            if(self.isSoftmaxEnabled):
+                # TODO: evaluate gradient of cross_entropy wrt Zj's
+                pass
+            else:
+                outputLayerError = (self.activations[-1] - y)
         error_biases[-1] = outputLayerError
         error_weights[-1] = outputLayerError.dot(self.activations[-2].transpose())
         for i in xrange(self.num_layers - 2, 0, -1):
@@ -90,6 +102,8 @@ class NeuralNetwork(object):
         error_weights = [np.zeros(weight.shape) for weight in self.weights]
         ''' Evaluate gradients for each image in batch '''
         for x,y in batch:
+            ''' One forward pass followed by one backward pass '''
+            self.forwardProp(x)
             db, dw = self.backprop(x,y)
             error_biases = map(add, error_biases, db)
             error_weights = map(add, error_weights, dw)
