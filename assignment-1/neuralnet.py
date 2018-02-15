@@ -29,6 +29,10 @@ class NeuralNetwork(object):
         # Start with random biases
         self.biases = [np.random.randn(x, 1) for x in model]
 
+        #Batch norm parameters
+        self.beta = [np.random.randn(x, 1) for x in model]
+        self.gamma = [np.random.randn(x, 1) for x in model]
+
         # Inputs to activations
         self.z = [np.zeros((x,1)) for x in model]
 
@@ -44,6 +48,14 @@ class NeuralNetwork(object):
         for i in xrange(1, self.num_layers):
             self.z[i] = self.weights[i].dot(self.activations[i - 1]) + self.biases[i]
             self.activations[i] = self.activation_function(self.z[i])
+
+    def bn_forwardProp(self, X):
+        self.activations[0] = self.activation_function(X)
+        mu = 1/N*np.sum(h,axis =0) # Size (H,)
+        sigma2 = 1/N*np.sum((h-mu)**2,axis=0)# Size (H,)
+        hath = (h-mu)*(sigma2+epsilon)**(-1./2.)
+        y = gamma*hath+beta
+
 
     def learn(self, training_data, test_data):
     	random.shuffle(training_data)

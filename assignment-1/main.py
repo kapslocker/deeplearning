@@ -1,7 +1,7 @@
 from extract_data import *
 from neuralnet import *
 
-labelstring = "XMO"
+labelstring = "XMOFG"
 learning_rate = 0.1
 mini_batch_size = 10
 model = [784,100,3]
