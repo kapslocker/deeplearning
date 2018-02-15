@@ -3,7 +3,7 @@ import random
 from functions import *
 from operator import add
 class NeuralNetwork(object):
-    def __init__(self, learningRate, model, minibatchsize, epochs, l2_lambda = 0.0, dropout = 1.0,activation_function = 'sigmoid', activation_function_grad = 'sigmoid_grad', objective_function = 'mean_squared', drop = True):
+    def __init__(self, learningRate, model, minibatchsize, epochs, l1_lambda = 0.0,  l2_lambda = 0.0, dropout = 1.0,activation_function = 'sigmoid', activation_function_grad = 'sigmoid_grad', objective_function = 'mean_squared', drop = True):
         ''' Setup a fully connected neural network represented by
             model: sizes of each layer (1D array)'''
 
@@ -16,6 +16,7 @@ class NeuralNetwork(object):
         self.dropout = dropout
         self.drop = drop
         self.l2lambda = l2_lambda
+        self.l1lambda = l1_lambda
         self.objective_function = objective_function
         if activation_function == 'sigmoid':
             self.activation_function = lambda x : sigmoid(x)
@@ -94,8 +95,12 @@ class NeuralNetwork(object):
             error_weights = map(add, error_weights, dw)
         ''' Update weights and bias '''
         self.biases = [bias - (self.rate * error_bias) / self.mini_batch_size for bias, error_bias in zip(self.biases, error_biases)]
-        self.weights = [(1.0 - ((self.rate * self.l2lambda) / self.N)) * weight - (self.rate * error_weight) / self.mini_batch_size for weight, error_weight in zip(self.weights, error_weights)]
-
+        if self.l2lambda > 0:
+            self.weights = [(1.0 - ((self.rate * self.l2lambda) / self.N)) * weight - (self.rate * error_weight) / self.mini_batch_size for weight, error_weight in zip(self.weights, error_weights)]
+        elif self.l1lambda > 0:
+            self.weights = [weight - np.sign(weight) * (self.rate * self.l1lambda) / self.N - (self.rate * error_weight) / self.mini_batch_size for weight, error_weight in zip(self.weights, error_weights)]
+        else:
+            self.weights = [weight - (self.rate * error_weight) / self.mini_batch_size for weight, error_weight in zip(self.weights, error_weights)]
     def test(self, test_data):
         n = len(test_data)
         count = len(filter(lambda (x,y) : np.argmax(y) == self.predict(x), test_data))
