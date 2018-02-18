@@ -1,6 +1,7 @@
 #Dataset
 assignment-1/gzip/*
 assignment-1/byclass/*
+assignment-1/*.txt
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]

@@ -2,14 +2,13 @@ from extract_data import *
 from neuralnet import *
 
 labelstring = "LNBEDKTAY"
-# labelstring = "LNB"
 learning_rate = 0.3
-mini_batch_size = 64
-model = [784,300, 300,9]
+mini_batch_size = 32
+model = [784,30,30,9]
 model[-1] = len(labelstring)
-epochs = 100
+epochs = 400
 dropout_rate = 1
-isDropout = True
+isDropout = False
 l2lambda = 0.0
 l1lambda = 0.0
 isSoftmaxEnabled = True
@@ -74,5 +73,4 @@ For 9 classes: 50125 images:
     dropout_rate = 0.9
     l2lambda = 0
     Test Accuracy = 98.03%
-
 '''
