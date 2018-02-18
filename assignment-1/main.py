@@ -1,18 +1,18 @@
 from extract_data import *
 from neuralnet import *
 
-# labelstring = "LNBEDKTAY"
-labelstring = "LNB"
-learning_rate = 3
-mini_batch_size = 36
-model = [784,30,9]
+labelstring = "LNBEDKTAY"
+# labelstring = "LNB"
+learning_rate = 0.3
+mini_batch_size = 64
+model = [784,300, 300,9]
 model[-1] = len(labelstring)
 epochs = 100
-dropout_rate = 0.9
+dropout_rate = 1
 isDropout = True
 l2lambda = 0.0
 l1lambda = 0.0
-isSoftmaxEnabled = False
+isSoftmaxEnabled = True
 objective_function = 'mean_squared'
 activationFunction = 'relu'
 print "learning rate = ", learning_rate
@@ -25,6 +25,7 @@ print "L1 lambda = ", l1lambda
 print "Softmax Layer = ", isSoftmaxEnabled
 print "objective_function = ", objective_function
 print "activation_function = ", activationFunction
+
 NN = NeuralNetwork(learning_rate, model, mini_batch_size, epochs, l1_lambda = l1lambda, l2_lambda = l2lambda, dropout = dropout_rate, activation_function = activationFunction, objective_function = objective_function, drop = isDropout, isSoftmax = isSoftmaxEnabled)
 # NN = Network(model)
 trainData = train_data(labelstring)

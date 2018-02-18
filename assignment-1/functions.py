@@ -6,7 +6,7 @@ def sigmoid(x):
     return 1.0 / (1.0 + np.exp(-x))
 
 def sigmoid_inverse(y):
-    return np.log(y/(1-y))
+    return np.log(y / (1.0 - y))
 
 def sigmoid_grad(x):
     return sigmoid(x) * (1.0 - sigmoid(x))

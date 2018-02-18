@@ -3,7 +3,7 @@ import random
 from functions import *
 from operator import add
 class NeuralNetwork(object):
-    def __init__(self, learningRate, model, minibatchsize, epochs, l1_lambda = 0.0,  l2_lambda = 0.0, dropout = 1.0,activation_function = 'sigmoid', activation_function_grad = 'sigmoid_grad', objective_function = 'mean_squared', drop = True, isSoftmax = False):
+    def __init__(self, learningRate, model, minibatchsize, epochs, l1_lambda = 0.0,  l2_lambda = 0.0, dropout = 1.0,activation_function = 'sigmoid', objective_function = 'mean_squared', drop = True, isSoftmax = False):
         ''' Setup a fully connected neural network represented by
             model: sizes of each layer (1D array)'''
 
@@ -69,9 +69,10 @@ class NeuralNetwork(object):
                batches = [training_data[j : j + self.mini_batch_size] for j in xrange(0, self.N, self.mini_batch_size)]
                for batch in batches:
                    self.updatebatch(batch)
+                   print 'completed batch'
                print "Processed Epoch {0} ".format(i), "Test accuracy: ", self.test(test_data), "Train accuracy: ", self.test(training_data)
 
-    def backprop(self, x, y):
+    def backprop(self, y):
         error_biases =  [np.zeros(bias.shape) for bias in self.biases]
         error_weights = [np.zeros(wt.shape) for wt in self.weights]
         if(self.objective_function == 'mean_squared'):
@@ -85,7 +86,6 @@ class NeuralNetwork(object):
                 outputLayerError = (self.activations[-1] - y) * self.activation_function_grad(self.z[-1])
         elif self.objective_function == 'cross_entropy':
             if(self.isSoftmaxEnabled):
-                # TODO: evaluate gradient of cross_entropy wrt Zj's
                 pass
             else:
                 outputLayerError = (self.activations[-1] - y)
@@ -104,7 +104,7 @@ class NeuralNetwork(object):
         for x,y in batch:
             ''' One forward pass followed by one backward pass '''
             self.forwardProp(x)
-            db, dw = self.backprop(x,y)
+            db, dw = self.backprop(y)
             error_biases = map(add, error_biases, db)
             error_weights = map(add, error_weights, dw)
         ''' Update weights and bias '''
