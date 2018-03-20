@@ -6,6 +6,7 @@ assignment-1/*.txt
 
 #assignment-2
 assignment-2/videos/*
+assignment-2/data/*
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
