@@ -6,7 +6,7 @@ assignment-1/*.txt
 
 #assignment-2
 assignment-2/videos/*
-assignment-2/data/*
+assignment-2/data*
 assignment-2/data_cropped/*
 
 # Byte-compiled / optimized / DLL files

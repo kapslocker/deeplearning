@@ -27,15 +27,6 @@ def split_data(dir, split):
                 command = 'cp \"{0}\" {1}'.format(os.path.join(location, item), os.path.join(os.path.join(dir, splits[i]), cat))
                 os.system(command)
 
-# def check_uniqueness():
-#     root = 'data_cropped/'
-#     trainpath = root + 'train'
-#     testpath = root + 'test'
-#     valpath = root + 'val'
-#     dict1 = defaultdict(int)
-#     train = os.listdir(trainpath)
-#     test = os.listdir(testpath)
-#     val = os.listdir(valpath)
 if __name__ == '__main__':
     dir = "videos/"
     if not os.path.exists('data'):
