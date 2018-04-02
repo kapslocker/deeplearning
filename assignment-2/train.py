@@ -54,9 +54,10 @@ def train_model(model, criterion, optimizer, scheduler, num_epochs=25):
                 _, preds = torch.max(outputs.data, 1)
                 loss = criterion(outputs, labels)
                 if phase == 'train':
+                    ''' Perform backprop and update learning rate '''
                     loss.backward()
                     optimizer.step()
-                # statistics
+                ''' Evaluate loss '''
                 running_loss += loss.data[0] * inputs.size(0)
                 running_corrects += torch.sum(preds == labels.data)
             epoch_loss = running_loss / dataset_sizes[phase]
