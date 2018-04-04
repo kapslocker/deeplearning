@@ -9,7 +9,8 @@ assignment-2/videos/*
 assignment-2/data*
 assignment-2/data_cropped/*
 assignment-2/models/*
-
+assignment-2/haar*
+assignment-2/test_vids/*
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]

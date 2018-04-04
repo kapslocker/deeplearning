@@ -1,0 +1,127 @@
+Is_gpu = True
+Epoch 0/24
+----------
+train Loss: 0.1893 Acc: 0.9424
+test Loss: 0.0442 Acc: 0.9848
+
+Epoch 1/24
+----------
+train Loss: 0.0608 Acc: 0.9826
+test Loss: 0.0212 Acc: 0.9932
+
+Epoch 2/24
+----------
+train Loss: 0.0408 Acc: 0.9879
+test Loss: 0.0291 Acc: 0.9904
+
+Epoch 3/24
+----------
+train Loss: 0.0375 Acc: 0.9899
+test Loss: 0.0309 Acc: 0.9882
+
+Epoch 4/24
+----------
+train Loss: 0.0231 Acc: 0.9938
+test Loss: 0.0326 Acc: 0.9890
+
+Epoch 5/24
+----------
+train Loss: 0.0335 Acc: 0.9920
+test Loss: 0.0225 Acc: 0.9916
+
+Epoch 6/24
+----------
+train Loss: 0.0318 Acc: 0.9922
+test Loss: 0.0387 Acc: 0.9879
+
+Epoch 7/24
+----------
+train Loss: 0.0164 Acc: 0.9954
+test Loss: 0.0267 Acc: 0.9907
+
+Epoch 8/24
+----------
+train Loss: 0.0155 Acc: 0.9965
+test Loss: 0.0234 Acc: 0.9921
+
+Epoch 9/24
+----------
+train Loss: 0.0114 Acc: 0.9972
+test Loss: 0.0215 Acc: 0.9930
+
+Epoch 10/24
+----------
+train Loss: 0.0139 Acc: 0.9966
+test Loss: 0.0260 Acc: 0.9910
+
+Epoch 11/24
+----------
+train Loss: 0.0134 Acc: 0.9973
+test Loss: 0.0237 Acc: 0.9932
+
+Epoch 12/24
+----------
+train Loss: 0.0111 Acc: 0.9973
+test Loss: 0.0263 Acc: 0.9930
+
+Epoch 13/24
+----------
+train Loss: 0.0130 Acc: 0.9968
+test Loss: 0.0236 Acc: 0.9932
+
+Epoch 14/24
+----------
+train Loss: 0.0096 Acc: 0.9980
+test Loss: 0.0207 Acc: 0.9941
+
+Epoch 15/24
+----------
+train Loss: 0.0071 Acc: 0.9985
+test Loss: 0.0238 Acc: 0.9924
+
+Epoch 16/24
+----------
+train Loss: 0.0109 Acc: 0.9973
+test Loss: 0.0255 Acc: 0.9935
+
+Epoch 17/24
+----------
+train Loss: 0.0090 Acc: 0.9982
+test Loss: 0.0204 Acc: 0.9935
+
+Epoch 18/24
+----------
+train Loss: 0.0066 Acc: 0.9983
+test Loss: 0.0236 Acc: 0.9930
+
+Epoch 19/24
+----------
+train Loss: 0.0090 Acc: 0.9979
+test Loss: 0.0216 Acc: 0.9930
+
+Epoch 20/24
+----------
+train Loss: 0.0112 Acc: 0.9970
+test Loss: 0.0205 Acc: 0.9935
+
+Epoch 21/24
+----------
+train Loss: 0.0085 Acc: 0.9985
+test Loss: 0.0237 Acc: 0.9930
+
+Epoch 22/24
+----------
+train Loss: 0.0098 Acc: 0.9982
+test Loss: 0.0216 Acc: 0.9927
+
+Epoch 23/24
+----------
+train Loss: 0.0114 Acc: 0.9979
+test Loss: 0.0221 Acc: 0.9930
+
+Epoch 24/24
+----------
+train Loss: 0.0110 Acc: 0.9975
+test Loss: 0.0227 Acc: 0.9930
+
+Best val Acc: 0.994088

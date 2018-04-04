@@ -1,0 +1,127 @@
+7
+
+Epoch 0/24
+Phase: train, Loss: 0.438536699539 Acc: 0.860586580956
+Phase: test, Loss: 0.195704065532 Acc: 0.939470720721
+
+
+Epoch 1/24
+Phase: train, Loss: 0.28683304733 Acc: 0.909441542788
+Phase: test, Loss: 0.153750244427 Acc: 0.953265765766
+
+
+Epoch 2/24
+Phase: train, Loss: 0.25850486583 Acc: 0.915226998795
+Phase: test, Loss: 0.154826673067 Acc: 0.954954954955
+
+
+Epoch 3/24
+Phase: train, Loss: 0.258700380253 Acc: 0.916834069908
+Phase: test, Loss: 0.158427029613 Acc: 0.95411036036
+
+
+Epoch 4/24
+Phase: train, Loss: 0.245572264628 Acc: 0.922860586581
+Phase: test, Loss: 0.207366142187 Acc: 0.935247747748
+
+
+Epoch 5/24
+Phase: train, Loss: 0.19031598225 Acc: 0.938529529932
+Phase: test, Loss: 0.184078671911 Acc: 0.942849099099
+
+
+Epoch 6/24
+Phase: train, Loss: 0.203131153642 Acc: 0.937163519486
+Phase: test, Loss: 0.154521245375 Acc: 0.953828828829
+
+
+Epoch 7/24
+Phase: train, Loss: 0.180317402796 Acc: 0.940377661712
+Phase: test, Loss: 0.151466609893 Acc: 0.95579954955
+
+
+Epoch 8/24
+Phase: train, Loss: 0.198642567402 Acc: 0.93836882282
+Phase: test, Loss: 0.149594839058 Acc: 0.956081081081
+
+
+Epoch 9/24
+Phase: train, Loss: 0.18509511417 Acc: 0.94262756127
+Phase: test, Loss: 0.155898410928 Acc: 0.95213963964
+
+
+Epoch 10/24
+Phase: train, Loss: 0.193221431001 Acc: 0.9402169546
+Phase: test, Loss: 0.162683833357 Acc: 0.94847972973
+
+
+Epoch 11/24
+Phase: train, Loss: 0.196569974358 Acc: 0.938208115709
+Phase: test, Loss: 0.122173494584 Acc: 0.961711711712
+
+
+Epoch 12/24
+Phase: train, Loss: 0.188343688674 Acc: 0.941743672157
+Phase: test, Loss: 0.180013683767 Acc: 0.945382882883
+
+
+Epoch 13/24
+Phase: train, Loss: 0.187163277743 Acc: 0.942466854158
+Phase: test, Loss: 0.171646046511 Acc: 0.947916666667
+
+
+Epoch 14/24
+Phase: train, Loss: 0.191203991282 Acc: 0.940377661712
+Phase: test, Loss: 0.160720198977 Acc: 0.950168918919
+
+
+Epoch 15/24
+Phase: train, Loss: 0.18644664256 Acc: 0.941984732824
+Phase: test, Loss: 0.205985170059 Acc: 0.937218468468
+
+
+Epoch 16/24
+Phase: train, Loss: 0.18228154852 Acc: 0.942145439936
+Phase: test, Loss: 0.161148563799 Acc: 0.950168918919
+
+
+Epoch 17/24
+Phase: train, Loss: 0.187612128718 Acc: 0.941422257935
+Phase: test, Loss: 0.160947621741 Acc: 0.949605855856
+
+
+Epoch 18/24
+Phase: train, Loss: 0.183365502708 Acc: 0.942225793491
+Phase: test, Loss: 0.185016734979 Acc: 0.943130630631
+
+
+Epoch 19/24
+Phase: train, Loss: 0.196536375289 Acc: 0.938288469265
+Phase: test, Loss: 0.231674501488 Acc: 0.927083333333
+
+
+Epoch 20/24
+Phase: train, Loss: 0.201483496713 Acc: 0.938609883487
+Phase: test, Loss: 0.147018090562 Acc: 0.955236486486
+
+
+Epoch 21/24
+Phase: train, Loss: 0.195788303874 Acc: 0.939172358377
+Phase: test, Loss: 0.129365322927 Acc: 0.960867117117
+
+
+Epoch 22/24
+Phase: train, Loss: 0.19666522737 Acc: 0.93893129771
+Phase: test, Loss: 0.158934387068 Acc: 0.951295045045
+
+
+Epoch 23/24
+Phase: train, Loss: 0.184935683532 Acc: 0.943029329048
+Phase: test, Loss: 0.121466753216 Acc: 0.961993243243
+
+
+Epoch 24/24
+Phase: train, Loss: 0.19763922084 Acc: 0.93708316593
+Phase: test, Loss: 0.128843833298 Acc: 0.961148648649
+
+best test accuracy: 0.961993243243
