@@ -8,7 +8,7 @@ def gen_data(dir):
 
 def split_data(dir, split):
     categories = os.listdir(dir)
-    splits = ['train', 'val', 'test']
+    splits = ['train', 'test']
     paths = {x : os.path.join(dir, x) for x in splits}
     for (key, value) in paths.items():
         os.mkdir(value)
@@ -16,11 +16,14 @@ def split_data(dir, split):
             os.mkdir(os.path.join(value, cat))
     for cat in categories:
         print "Starting category {0}".format(cat)
-        # temp = raw_input()
+        temp = raw_input()
         location = os.path.join(dir, cat)
-        files = os.listdir(location)
+        file_all = os.listdir(location)
+        files = random.sample(file_all, 3000)
         for i in xrange(len(splits)):
-            sizes = {x : len(os.listdir(os.path.join(dir, x))) for x in categories}
+            ''' Count images in each category '''
+            # sizes = {x : len(os.listdir(os.path.join(dir, x))) for x in categories}
+            sizes = {x : 3000 for x in categories}
             items = random.sample(files, int(float(sizes[cat] * split[i])/100.0))
             files = [x for x in files if x not in items]
             for item in items:
@@ -31,4 +34,4 @@ if __name__ == '__main__':
     dir = "videos/"
     if not os.path.exists('data'):
         gen_data(dir)
-    split_data('data_cropped', [70,10,20])
+    split_data('largeFace', [70,30])

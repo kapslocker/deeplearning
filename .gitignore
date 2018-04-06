@@ -1,4 +1,5 @@
 #Dataset
+data/*
 #assignment-1
 assignment-1/gzip/*
 assignment-1/byclass/*
@@ -11,6 +12,7 @@ assignment-2/data_cropped/*
 assignment-2/models/*
 assignment-2/haar*
 assignment-2/test_vids/*
+assignment-2/largeFace*
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]

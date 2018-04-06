@@ -24,7 +24,8 @@ if __name__ == '__main__':
         os.makedirs(folder2)
     if not os.path.exists(noise_folder):
         os.makedirs(noise_folder)
-    face_cascade = cv2.CascadeClassifier(cv2.data.haarcascades + 'haarcascade_frontalface_default.xml')
+    face_cascade = cv2.CascadeClassifier('classifier_newer/cascade.xml')
+    #face_cascade = cv2.CascadeClassifier(cv2.data.haarcascades + 'haarcascade_frontalface_default.xml')
     cap = cv2.VideoCapture(args.vid_file)
     vidname = args.vid_file.replace(' ','').replace('-','').replace('.','').replace('/','').replace('!','').replace('&','')
     print "Video length = " + str(cap.get(cv2.CAP_PROP_FRAME_COUNT))
@@ -51,8 +52,8 @@ if __name__ == '__main__':
                     if cropped_label is not "-":
                         labels_cropped.write(cropped_label)
                         cv2.imwrite(path2, frame[y: y + h, x : x + w])
-                    labels.write(label)
-                    cv2.imwrite(path, frame)
+                    # labels.write(label)
+                    # cv2.imwrite(path, frame)
                     if cv2.waitKey(1) & 0xFF == ord('q'):
                         break
     cap.release()
