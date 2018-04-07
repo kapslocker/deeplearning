@@ -39,7 +39,34 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument('data_dir', type = str, help = "Dataset location")
     parser.add_argument('tsne_file', type = str, help = 'tSNE file location')
+    parser.add_argument('model', type = str, help = "Model file location")
     args = parser.parse_args()
+    if(torch.cuda.is_available()):
+        model_trained = torch.load(args.model)
+    else:
+        model_trained = torch.load(args.model, map_location = lambda storage, loc: storage)
+    model_trained.train(False)
+    ''' Get all but the last linear layer of the trained network. '''
+    myModel = prevModel(model_trained)
+    X = list()
+    print args.data_dir
+    for category in os.listdir(args.data_dir):
+        print "category: " + category
+        for item in os.listdir(args.data_dir + "/" + category):
+            frame = cv2.imread(args.data_dir + "/" + category + "/" + item)
+            transformed = to_tensor(Image.fromarray(frame))
+            output = myModel.forward(transformed)
+            output = output.data.numpy()
+            ''' Get the 512 x 512 vector '''
+            output_val = [output[0][i][0][0] for i in xrange(512)]
+            X.append(output_val)
+    print "Vectors computed. Beginning t-SNE"
+    ''' Using default tSNE parameters '''
+    X_embedded = TSNE().fit_transform(X)
+    with open(args.tsne_file, 'w') as opfile:
+        for x in X_embedded:
+            opfile.write(str(x[0]) + " " + str(x[1]) + "\n")
+    print "tSNE evaluated. Drawing now..."
     '''' Draw the colored tsne map '''
     counts = list()
     for category in os.listdir(args.data_dir):
@@ -48,7 +75,7 @@ if __name__ == '__main__':
     ''' Create labels '''
     for i in xrange(len(counts)):
         l = list(itertools.repeat(i, counts[i]))
-        a.append(l)
+        a = a + l
     X = list()
     Y = list()
     with open(args.tsne_file, 'r') as inpfile:
@@ -60,30 +87,4 @@ if __name__ == '__main__':
     Y = np.array(Y)
     a = np.array(a)
     plt.scatter(X, Y, c = a)
-    # parser.add_argument('model', type = str, help = "Model file location")
-    # args = parser.parse_args()
-    # if(torch.cuda.is_available()):
-    #     model_trained = torch.load(args.model)
-    # else:
-    #     model_trained = torch.load(args.model, map_location = lambda storage, loc: storage)
-    # model_trained.train(False)
-    # ''' Get all but the last linear layer of the trained network. '''
-    # myModel = prevModel(model_trained)
-    # X = list()
-    # print args.data_dir
-    # for category in os.listdir(args.data_dir):
-    #     print "category: " + category
-    #     for item in os.listdir(args.data_dir + "/" + category):
-    #         frame = cv2.imread(args.data_dir + "/" + category + "/" + item)
-    #         transformed = to_tensor(Image.fromarray(frame))
-    #         output = myModel.forward(transformed)
-    #         output = output.data.numpy()
-    #         ''' Get the 512 x 512 vector '''
-    #         output_val = [output[0][i][0][0] for i in xrange(512)]
-    #         X.append(output_val)
-    # print "Vectors computed. Beginning t-SNE"
-    # ''' Using default tSNE parameters '''
-    # X_embedded = TSNE().fit_transform(X)
-    # with open('tsne_outputs/resnet_cv.txt', 'w') as opfile:
-    #     for x in X_embedded:
-    #         opfile.write(str(x[0]) + " " + str(x[1]) + "\n")
+    plt.show()
