@@ -18,7 +18,7 @@ input_size = 1
 hidden_size = 250
 num_layers = 2
 num_classes = 2
-batch_size = 1  #SGD
+batch_size = 200
 num_epochs = 50
 learning_rate = 0.001
 
@@ -34,15 +34,15 @@ class BiDirectionalLSTM(nn.Module):
         h0 = Variable(torch.rand(self.num_layers*2, x.size(0), self.hidden_size)) # 2 for bidirection
         c0 = Variable(torch.rand(self.num_layers*2, x.size(0), self.hidden_size))
         out, _ = self.lstm(x, (h0, c0)) # forward prop
-        out = self.fc(out[:, -1, :])    # get hidden state
+        out = self.fc(out)    # get hidden state
         return out
 
 rnn = BiDirectionalLSTM(input_size, hidden_size, num_layers, num_classes)
-
+# rnn.cuda()
 
 #train
 
-criterion = nn.CrossEntropyLoss()
+criterion = nn.MSELoss()
 optimizer = torch.optim.Adam(rnn.parameters(), lr = learning_rate)
 min_loss = 1000
 train_data = get_data.getlabels(TRAIN_DIR)
@@ -50,18 +50,21 @@ for epoch in xrange(num_epochs):
     #SGD
     for idx, (y,labels_y) in enumerate(train_data):
         seq_len = y.shape[0]
+        x = int(seq_len / batch_size) * batch_size
+        y = y[:x]
+        labels_y = labels_y[:x]
         y = torch.from_numpy(y)
-        y = Variable(y.view(1, seq_len, input_size))
-        labels_y = Variable(torch.from_numpy(labels_y))
-
+        labels_y = torch.from_numpy(labels_y)
+        y = Variable(y.view(batch_size, int(seq_len / batch_size), input_size))
+        labels_y = Variable(labels_y.view(batch_size, int(seq_len / batch_size), input_size))
+        # y = y.cuda()
+        # labels_y = labels_y.cuda()
         optimizer.zero_grad()
-        #forward prop
         outputs = rnn(y)
-        #eval loss
-        loss = criterion(outputs, labels_y)
-        #back prop
+        values, indices = torch.max(outputs, 2)
+        loss = criterion(values, labels_y.float())
         loss.backward()
-
+        print("here")
         #print loss
         if idx % 100 == 0:
             print('epoch %d/%d, sample %d/%d, loss: %.6f'%(epoch + 1, num_epochs, idx, len(train_data)/batch_size, loss.data[0]))

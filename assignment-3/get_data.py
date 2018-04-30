@@ -41,16 +41,16 @@ def getlabels(data_dir):
                             boundaries.append(a)
                         if b not in boundaries:
                             boundaries.append(b)
-                seq_labels = [0.0] * len(seq)
+                seq_labels = [0] * len(seq)
                 #----------------blah-----blah--blaaaaahhh--------
                 for idx in xrange(boundaries[0]):
-                    seq_labels[idx] = 1.0
+                    seq_labels[idx] = 1
                 for idx in xrange(boundaries[-1], len(seq)):
-                    seq_labels[idx] = 1.0
+                    seq_labels[idx] = 1
                 for bdr in xrange(1, len(boundaries) - 1):
                     idx = boundaries[bdr]
                     for i in xrange(max(0,idx - 10), min(len(seq), idx + 10)):
-                        seq_labels[i] = 1.0
+                        seq_labels[i] = 1
                 yield (seq, np.array(seq_labels))
 
 # mfccs = librosa.feature.mfcc(y = y, sr = sr, n_mfcc = 40)
