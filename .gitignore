@@ -13,6 +13,8 @@ assignment-2/models/*
 assignment-2/haar*
 assignment-2/test_vids/*
 assignment-2/largeFace*
+
+assignment-3/TIMIT/*
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
